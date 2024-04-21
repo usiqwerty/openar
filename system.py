@@ -7,7 +7,7 @@ from gui.abstract.widget import Widget
 
 class System:
     """
-    Система
+    OpenAR system
     """
     system_apps: list[Widget | Application]
     user_apps: list[Widget | Application]
@@ -41,7 +41,7 @@ class System:
 
     def run(self):
         """
-        Запустить AR шлем в многопоточном. Выполняется, пока не завершатся все потоки
+        Запустить OpenAR в многопоточном режиме. Выполняется, пока не завершатся все потоки
         @return:
         """
         # self.threads += [

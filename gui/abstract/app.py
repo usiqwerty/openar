@@ -5,7 +5,7 @@ from device_config import screen_size
 
 class Application:
     """
-    Application
+    OpenAR Application
     """
     name: str
     screen_size = screen_size
