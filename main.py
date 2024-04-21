@@ -36,7 +36,7 @@ from headset import Headset
 
 # gui_machine = interface.GUI()
 device = Headset()
-device.system.register_app(FPSCounter())
+device.system.add_widget(FPSCounter())
 device.run()
 
 # out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 25, (1480, 1440))
