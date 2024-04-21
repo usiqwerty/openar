@@ -15,9 +15,9 @@ class Application:
     def __init__(self):
         self.position = (0, 0)
 
-    def main(self):
+    def on_start(self):
         """
-        Application main thread
+        Application startup handler
         """
         pass
 

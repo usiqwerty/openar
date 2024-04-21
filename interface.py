@@ -33,7 +33,7 @@ class GUI():
 
         self.draw = ImageDraw.Draw(gui)
         if right_panel.active:
-            right_panel_image = right_panel.main()
+            right_panel_image = right_panel.on_start()
             gui.paste(right_panel_image, right_panel.destination, right_panel_image)
 
         return gui

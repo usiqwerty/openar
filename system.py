@@ -23,9 +23,9 @@ class System:
 
     def run_app(self, app: Application):
         self.user_apps.append(app)
-        thread = threading.Thread(name=app.name, target=app.main)
+        thread = threading.Thread(name=app.name, target=app.on_start)
         thread.start()
-        self.threads.append((app.name, app.main, thread))
+        self.threads.append((app.name, app.on_start, thread))
 
     def run(self):
         """
