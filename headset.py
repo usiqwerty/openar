@@ -13,8 +13,9 @@ class Headset:
 
     def __init__(self):
         self.camera = Camera()
+        self.system = System()
         self.display = Display(self.camera, self.system)
-        self.system = System(self.display.show_video)
+        self.system.silent_add_thread('display', self.display.show_video)
 
     def run(self):
         self.system.run()
