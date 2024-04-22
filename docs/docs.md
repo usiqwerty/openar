@@ -5,3 +5,5 @@
 [Архитектура](system.md)
 
 [Список задач](todo.md)
+
+[SDK](sdk/index.md)
