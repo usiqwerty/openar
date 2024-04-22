@@ -5,26 +5,27 @@ from cvzone.SelfiSegmentationModule import SelfiSegmentation
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False,
-                       max_num_hands=1,
+                       max_num_hands=2,
                        min_detection_confidence=0.5,
                        min_tracking_confidence=0.5)
-mp_draw = mp.solutions.drawing_utils
 
 segmentor = SelfiSegmentation()
-class controller():
-    def remove_background(self,img):
+
+
+class HandTracker:
+    def remove_background(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         
-        ret, mask = cv2.threshold(gray, 0, 255, cv2.THRESH_TRIANGLE) 
+        ret, mask = cv2.threshold(gray, 5, 255, cv2.THRESH_TRIANGLE)
         mask = cv2.bitwise_not(mask)
-        kernel = np.ones((9,9), np.uint8)
+        kernel = np.ones((9, 9), np.uint8)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
         result = img.copy()
         result = cv2.cvtColor(result, cv2.COLOR_BGR2BGRA)
         result[:, :, 3] = mask
-
+        # for i in range(3): result[:, :, i] = mask
         return result, mask
     
     def find_and_get_hands(self, image):
@@ -42,6 +43,7 @@ class controller():
                 h, w, c = image.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 lmList.append([id, cx, cy])
+                image = cv2.drawMarker(image, (cx, cy), (255, 0, 0))
         if (len(lmList) >= 20):
             xlist = []
             ylist = []
@@ -54,11 +56,13 @@ class controller():
             maxx = max(xlist) + 40
             miny = min(ylist) - 40
             maxy = max(ylist) + 40
-            if (minx <= 0): minx = 1
-            if (maxx <= 0): maxx = 1
-            if (maxy <= 0): maxy = 1
-            if (miny <= 0): miny = 1
+
+            minx = max(minx, 1)
+            maxx = max(maxx, 1)
+            maxy = max(maxy, 1)
+            miny = max(miny, 1)
 
             image = image[miny:maxy, minx:maxx]
             image, mask = self.remove_background(image)    
+
         return image, lmList, miny, minx, maxy, maxx, mask

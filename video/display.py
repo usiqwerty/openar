@@ -1,12 +1,10 @@
-from typing import Any
-
 import cv2
 import numpy as np
 from numba import njit, prange
 
 from device_config import camera_size, imshow_delay, screen_size
 from system import System
-# from tracking_mp_opt import controller
+from tracking_mp_opt import HandTracker
 from video.camera import Camera
 
 camera_width, camera_height = camera_size
@@ -33,28 +31,34 @@ def overlay_images(background, overlay, x, y):
 
 
 class Display:
-    detector: Any  #: controller
+    detector: HandTracker
     camera: Camera
     system: System
     camera_frame: np.ndarray
 
-    def __init__(self, camera: Camera, system: System):  #: controller
+    def __init__(self, camera: Camera, system: System):
         """
 
         @rtype: object
         """
         self.camera = camera
         self.system = system
-        # self.detector = detector
+        self.detector = HandTracker()
 
     def show_video(self):
         print('Display job started')
         while True:
             self.camera.pull_frame()
             self.camera_frame = self.camera.frame
+            orig = self.camera.frame.copy()
 
             for widget in self.system.user_apps + self.system.system_apps:
                 overlay_images(self.camera_frame, widget.render(), widget.position[0], widget.position[1])
+
+            hands, fingers, miny, minx, maxy, maxx, mask = self.detector.find_and_get_hands(orig)
+            mask: np.ndarray
+            if len(fingers) > 0:
+                overlay_images(self.camera_frame, hands, minx, miny)
 
             eye_width = camera_width // 2
 
