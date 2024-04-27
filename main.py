@@ -1,14 +1,8 @@
-import threading
-
-import numpy as np
-
 # import interface
 # import tracking_mp_opt
-from device_config import camera_size, screen_size
-from widgets.fps import FPSCounter
-from video.camera import Camera
-from video.display import Display
 from headset import Headset
+from widgets.fps import FPSCounter
+from apps import About
 
 # hand_image = np.zeros([screen_width // 2, screen_height, 4], dtype=np.uint8)
 # actual_image = np.zeros([screen_width // 2, screen_height, 3], dtype=np.uint8)
@@ -36,7 +30,9 @@ from headset import Headset
 
 # gui_machine = interface.GUI()
 device = Headset()
+
 device.system.add_widget(FPSCounter())
+device.system.run_app(About.App())
 device.run()
 
 # out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 25, (1480, 1440))
