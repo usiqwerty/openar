@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 from cvzone.SelfiSegmentationModule import SelfiSegmentation
 
+from video.camera import Camera
+
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False,
                        max_num_hands=2,
@@ -13,6 +15,19 @@ segmentor = SelfiSegmentation()
 
 
 class HandTracker:
+    frame: np.ndarray
+    mask: np.ndarray
+    camera: Camera
+    x: int
+    y: int
+    fingers: list[list[int]]
+    def __init__(self, camera: Camera):
+        self.camera=camera
+        self.frame = np.zeros((100, 100, 3))
+        self.x=0
+        self.y=0
+        self.fingers=[]
+
     def remove_background(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         
@@ -66,3 +81,13 @@ class HandTracker:
             image, mask = self.remove_background(image)    
 
         return image, lmList, miny, minx, maxy, maxx, mask
+
+    def detect(self):
+        # hands, fingers, miny, minx, maxy, maxx, mask =
+        # self.frame = hands
+        # self.mask = mask
+        #
+        # self.x = minx
+        # self.y = miny
+        # self.fingers = fingers
+        return self.find_and_get_hands(self.camera.frame)

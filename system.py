@@ -3,6 +3,7 @@ from typing import Any
 
 from gui.abstract.app import Application
 from gui.abstract.widget import Widget
+from tracking_mp_opt import HandTracker
 
 
 class System:
@@ -12,11 +13,13 @@ class System:
     system_apps: list[Widget | Application]
     user_apps: list[Widget | Application]
     threads: list[tuple[str, Any, threading.Thread]]
+    hands_tracker: HandTracker
 
-    def __init__(self):
+    def __init__(self, camera):
         self.system_apps = []
         self.user_apps = []
         self.threads = []
+        self.hands_tracker = HandTracker(camera)
 
     def add_widget(self, widget: Widget):
         self.user_apps.append(widget)
@@ -44,12 +47,13 @@ class System:
         Запустить OpenAR в многопоточном режиме. Выполняется, пока не завершатся все потоки
         @return:
         """
-        # self.threads += [
-        #     # ['camera', camera.job, None],
-        #     # ['widgets', gui_job, None],
-        #     ('display', self.video_thread, None)
-        #     # ["video", video_writer]
-        # ]
+        self.threads += [
+            # ['camera', camera.job, None],
+            # ['widgets', gui_job, None],
+            # ('display', self.video_thread, None)
+            # ["video", video_writer]
+            # ('hands', self.hands_tracker.job, threading.Thread(name='hands', \))
+        ]
 
         for name, proc, thread in self.threads:
             if not thread.is_alive():

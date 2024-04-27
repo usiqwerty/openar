@@ -1,3 +1,5 @@
+import asyncio
+
 import cv2
 import numpy as np
 from numba import njit, prange
@@ -31,7 +33,6 @@ def overlay_images(background, overlay, x, y):
 
 
 class Display:
-    detector: HandTracker
     camera: Camera
     system: System
     camera_frame: np.ndarray
@@ -43,21 +44,19 @@ class Display:
         """
         self.camera = camera
         self.system = system
-        self.detector = HandTracker()
 
     def show_video(self):
         print('Display job started')
         while True:
             self.camera.pull_frame()
-            self.camera_frame = self.camera.frame
-            orig = self.camera.frame.copy()
+            self.camera_frame = self.camera.frame.copy()
+            # orig = self.camera.frame.copy()
 
             for widget in self.system.user_apps + self.system.system_apps:
                 overlay_images(self.camera_frame, widget.render(), widget.position[0], widget.position[1])
 
-            hands, fingers, miny, minx, maxy, maxx, mask = self.detector.find_and_get_hands(orig)
-            mask: np.ndarray
-            if len(fingers) > 0:
+            hands, lmList, miny, minx, maxy, maxx, mask = self.system.hands_tracker.detect()
+            if len(lmList) > 0:
                 overlay_images(self.camera_frame, hands, minx, miny)
 
             eye_width = camera_width // 2
@@ -72,3 +71,6 @@ class Display:
             cv2.imshow("full", final)
             if cv2.waitKey(imshow_delay) & 0xFF == ord('q'):
                 exit(0)
+    def job(self):
+        self.show_video()
+        #asyncio.run(self.show_video())
