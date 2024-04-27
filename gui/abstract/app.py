@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+import numpy as np
+
 from device_config import screen_size
 
 
@@ -22,7 +24,7 @@ class Application:
         pass
 
     @abstractmethod
-    def render(self):
+    def render(self) -> np.ndarray:
         """
         Draw frame layer in RGBA mode
         """
