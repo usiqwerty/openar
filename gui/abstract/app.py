@@ -1,6 +1,7 @@
 import numpy as np
 
 from device_config import screen_size
+from gui.abstract.uiwidget import UIWidget
 from video.rendering import overlay_images
 
 
@@ -13,7 +14,7 @@ class Application:
     position: tuple[int, int]
     size: tuple[int, int]
     background: tuple[int, int, int, int]
-    elements: list
+    elements: list[UIWidget]
 
     def __init__(self):
         self.position = (0, 0)
@@ -31,8 +32,8 @@ class Application:
         Draw frame layer in RGBA mode
         """
         frame = np.full((*self.size, 4), self.background)
-        for (x, y, element) in self.elements:
-            overlay_images(frame, element.draw(), x, y)
+        for element in self.elements:
+            overlay_images(frame, element.draw(), element.x, element.y)
 
         return frame
 

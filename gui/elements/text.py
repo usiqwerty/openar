@@ -1,18 +1,22 @@
 import cv2
 import numpy as np
 
+from gui.abstract.uiwidget import UIWidget
 
-class Text:
+
+class Text(UIWidget):
     """
     UI Text element
     """
 
-    def __init__(self, text, font_size=1, font_face=cv2.FONT_HERSHEY_SIMPLEX, thickness=1):
+    def __init__(self, text, font_size=1, font_face=cv2.FONT_HERSHEY_SIMPLEX, thickness=1, x=0, y=0):
         self.text = text
         self.font_size = font_size
         self.font_face = font_face
         self.thickness = thickness
         self.color = (0, 0, 0, 255)
+        self.x = x
+        self.y = y
 
     def draw(self) -> np.ndarray:
         """

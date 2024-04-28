@@ -12,7 +12,7 @@ class App(Application):
         self.position = (0, 100)
         self.frame = np.full((*self.size, 4), (0, 255, 255, 255))
 
-        self.elements += [
-            (0, 100, Text("The About App", font_size=3)),
-            (0, 200, Text("OpenAR v1.1 dev"))
+        self.elements = [
+            Text("The About App", font_size=3, x=0, y=100),
+            Text("OpenAR v1.1 dev", x=0, y=200)
         ]
