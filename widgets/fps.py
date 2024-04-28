@@ -3,7 +3,7 @@ import time
 import cv2
 import numpy as np
 
-from gui.abstract.widget import Widget
+from gui.abstract.appwidget import Widget
 
 
 class FPSCounter(Widget):

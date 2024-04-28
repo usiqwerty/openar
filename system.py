@@ -2,7 +2,7 @@ import threading
 from typing import Any
 
 from gui.abstract.app import Application
-from gui.abstract.widget import Widget
+from gui.abstract.appwidget import Widget
 
 
 class System:
