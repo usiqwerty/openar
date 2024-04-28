@@ -18,7 +18,7 @@ class Application:
 
     def __init__(self):
         self.position = (0, 0)
-        self.background = (240, 240, 240, 255)
+        self.background = (255, 255, 255, 255)
         self.elements = []
 
     def on_start(self):

@@ -10,7 +10,7 @@ class App(Application):
         self.name = "About"
         self.size = (500, 700)
         self.position = (0, 100)
-        self.frame = np.full((*self.size, 4), (0, 255, 255, 255))
+        self.frame = np.ndarray((*self.size, 4))
 
         self.elements = [
             Text("The About App", font_size=3, x=0, y=100),
