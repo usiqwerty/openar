@@ -1,8 +1,8 @@
 # import interface
 # import tracking_mp_opt
-from headset import Headset
+from core.headset import Headset
 from widgets.fps import FPSCounter
-from apps import About, Recorder
+from apps import Recorder
 # hand_image = np.zeros([screen_width // 2, screen_height, 4], dtype=np.uint8)
 # actual_image = np.zeros([screen_width // 2, screen_height, 3], dtype=np.uint8)
 # gui_image = np.zeros([screen_width // 2, screen_height, 4], dtype=np.uint8)

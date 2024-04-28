@@ -3,6 +3,7 @@ from typing import Any
 
 from gui.abstract.app import Application
 from gui.abstract.appwidget import Widget
+from core.permissive import PermissiveCore
 
 
 class System:
@@ -12,16 +13,19 @@ class System:
     system_apps: list[Widget | Application]
     user_apps: list[Widget | Application]
     threads: list[tuple[str, Any, threading.Thread]]
+    permissive: PermissiveCore
 
-    def __init__(self):
+    def __init__(self, permissive: PermissiveCore):
         self.system_apps = []
         self.user_apps = []
         self.threads = []
+        self.permissive = permissive
 
     def add_widget(self, widget: Widget):
         self.user_apps.append(widget)
 
     def run_app(self, app: Application):
+        app.system_api = self.permissive.generate_api_accessor(app.permissions)
         self.user_apps.append(app)
         thread = threading.Thread(name=app.name, target=app.on_start)
         # thread.start()

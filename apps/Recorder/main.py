@@ -3,6 +3,7 @@ import numpy as np
 from gui.abstract.app import Application
 from gui.elements.text import Text
 
+
 class App(Application):
     def __init__(self):
         super().__init__()
@@ -16,4 +17,4 @@ class App(Application):
         ]
 
     def on_start(self):
-        self.permissive.record_camera_video(10)
+        self.system_api.record_display_video(10)

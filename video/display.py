@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from device_config import camera_size, imshow_delay, screen_size
-from system import System
+from core.system import System
 # from tracking_mp_opt import controller
 from video.camera import Camera
 from video.rendering import overlay_images

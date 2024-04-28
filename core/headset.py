@@ -1,4 +1,5 @@
-from system import System
+from core.permissive import PermissiveCore
+from core.system import System
 from video.camera import Camera
 from video.display import Display
 
@@ -13,7 +14,8 @@ class Headset:
 
     def __init__(self):
         self.camera = Camera()
-        self.system = System()
+        self.permissive = PermissiveCore(self)
+        self.system = System(self.permissive)
         self.display = Display(self.camera, self.system)
         self.system.silent_add_thread('display', self.display.show_video)
 

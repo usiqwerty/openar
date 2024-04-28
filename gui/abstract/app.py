@@ -2,6 +2,7 @@ import numpy as np
 
 from device_config import screen_size
 from gui.abstract.uiwidget import UIWidget
+from core.permissive import SystemApi
 from video.rendering import overlay_images
 
 
@@ -15,11 +16,14 @@ class Application:
     size: tuple[int, int]
     background: tuple[int, int, int, int]
     elements: list[UIWidget]
+    permissions: list[str]
+    system_api: SystemApi
 
     def __init__(self):
         self.position = (0, 0)
         self.background = (255, 255, 255, 255)
         self.elements = []
+        self.permissions = []
 
     def on_start(self):
         """
