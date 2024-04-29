@@ -19,11 +19,15 @@ class Application:
     permissions: list[str]
     system_api: SystemApi
 
-    def __init__(self):
+    def __init__(self, manifest: dict):
         self.position = (0, 0)
         self.background = (255, 255, 255, 255)
         self.elements = []
         self.permissions = []
+        self.name = manifest["name"]
+        self.permissions = manifest['permissions']
+        self.size = tuple(manifest["size"][::-1])
+        self.frame = np.ndarray((*self.size, 4))
 
     def on_start(self):
         """

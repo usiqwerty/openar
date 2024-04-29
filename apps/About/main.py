@@ -5,8 +5,8 @@ from gui.elements.text import Text
 
 
 class App(Application):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, manifest: dict):
+        super().__init__(manifest)
         self.name = "About"
         self.size = (500, 700)
         self.position = (0, 100)
