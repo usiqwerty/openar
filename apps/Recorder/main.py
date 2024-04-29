@@ -1,5 +1,3 @@
-import numpy as np
-
 from gui.abstract.app import Application
 from gui.elements.text import Text
 
@@ -9,5 +7,4 @@ class App(Application):
         self.elements = [
             Text("Video is recording while this app is running")
         ]
-        pass
-        # self.system_api.record_display_video(10)
+        self.system_api.record_display_video(10)

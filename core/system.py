@@ -4,6 +4,7 @@ from typing import Any
 from gui.abstract.app import Application
 from gui.abstract.appwidget import Widget
 from core.permissive import PermissiveCore
+from core.app_loader import load_app
 
 
 class System:
@@ -24,7 +25,12 @@ class System:
     def add_widget(self, widget: Widget):
         self.user_apps.append(widget)
 
-    def run_app(self, app: Application):
+    def run_app(self, app_name: str):
+        """
+        Load and run the app
+        @param app_name: package name to be imported
+        """
+        app = load_app(app_name)
         app.system_api = self.permissive.generate_api_accessor(app.permissions)
         self.user_apps.append(app)
         thread = threading.Thread(name=app.name, target=app.on_start)

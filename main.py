@@ -33,9 +33,7 @@ from apps import Recorder
 device = Headset()
 
 device.system.add_widget(FPSCounter())
-with open("apps/Recorder/manifest.json", encoding='utf-8') as f:
-    mfst = json.load(f)
-device.system.run_app(Recorder.App(mfst))
+device.system.run_app("apps.Recorder")
 device.run()
 
 # out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 25, (1480, 1440))
