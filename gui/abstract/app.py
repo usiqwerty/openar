@@ -27,7 +27,7 @@ class Application:
         self.name = manifest["name"]
         self.permissions = manifest['permissions']
         self.size = tuple(manifest["size"][::-1])
-        self.frame = np.ndarray((*self.size, 4))
+        self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
 
     def on_start(self):
         """
@@ -39,7 +39,7 @@ class Application:
         """
         Draw frame layer in RGBA mode
         """
-        frame = np.full((*self.size, 4), self.background)
+        frame = np.full((*self.size, 4), self.background, dtype=np.uint8)
         for element in self.elements:
             overlay_images(frame, element.draw(), element.x, element.y)
 

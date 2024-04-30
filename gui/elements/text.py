@@ -26,5 +26,5 @@ class Text(UIWidget):
         # TODO: определять размер текста,
         #  чтобы правильно задать размер блока
         w, h = cv2.getTextSize(self.text, self.font_face, self.font_size, self.thickness)[0]
-        canvas = np.zeros((2 * h, w, 4))
+        canvas = np.zeros((2 * h, w, 4), dtype=np.uint8)
         return cv2.putText(canvas, self.text, (0, h), self.font_face, self.font_size, self.color)
