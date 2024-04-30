@@ -18,7 +18,7 @@ class Camera:
         stream.set(cv2.CAP_PROP_FRAME_HEIGHT, camera_height)
 
         self.stream = stream
-        self.frame = np.zeros([camera_width, camera_height, 3], dtype=np.uint8)
+        self.frame = np.zeros([camera_width, camera_height, 4], dtype=np.uint8)
 
     def pull_frame(self):
         success, actual_image = self.stream.read()
@@ -27,6 +27,7 @@ class Camera:
             return
 
         actual_image = actual_image[:, eye_shift:-eye_shift]
+        cv2.cvtColor(actual_image, cv2.COLOR_RGB2RGBA, actual_image)
         self.frame = actual_image
 
     def job(self):

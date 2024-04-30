@@ -1,19 +1,20 @@
-from numba import njit, prange
+import cv2
+import numpy as np
+from numba import njit
 
 
-@njit(parallel=True)
-def overlay_images(background, overlay, x, y):
-    y_end = y + overlay.shape[0]
-    x_end = x + overlay.shape[1]
+# @njit(parallel=True)
+def overlay_images(background: np.ndarray, overlay: np.ndarray, x, y):
+    height, width, _ = background.shape
+    over_hei, over_wid, _ = overlay.shape
+    y_end = min(y + over_hei, height)
+    x_end = min(x + over_wid, width)
+    over_y_end = y_end - y
+    over_x_end = x_end - x
 
-    for i in prange(overlay.shape[0]):
-        for j in prange(overlay.shape[1]):
-            if overlay[i, j, 3] != 0:  # Check if the alpha channel is not transparent
-                if 0 <= y + i < background.shape[0] and 0 <= x + j < background.shape[1]:
-                    alpha = overlay[i, j, 3] / 255.0
-                    inv_alpha = 1.0 - alpha
-                    for c in range(3):
-                        background[y + i, x + j, c] = (alpha * overlay[i, j, c] +
-                                                       inv_alpha * background[y + i, x + j, c])
+    alpha = overlay[:over_y_end, :over_x_end, 3] / 255.0
 
-    return background
+    for c in range(0, 3):
+        fg = overlay[:over_y_end, :over_x_end, c] * alpha
+        bg = background[y:y_end, x:x_end, c] * (1.0 - alpha)
+        background[y:y_end, x:x_end, c] = bg + fg
