@@ -17,7 +17,7 @@ class FPSCounter(Widget):
         self.position = (7, 0)
 
     def render(self):
-        frame = np.zeros((*self.screen_size, 4))
+        frame = np.zeros((self.screen_size[1], self.screen_size[0], 4), dtype=np.uint8)
 
         cv2.rectangle(frame, (0, 0), (150, 70), (0, 0, 0, 255), -1)
 
