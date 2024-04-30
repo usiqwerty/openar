@@ -1,10 +1,8 @@
 # import interface
 # import tracking_mp_opt
-import json
-
 from core.headset import Headset
 from widgets.fps import FPSCounter
-from apps import Recorder
+
 # hand_image = np.zeros([screen_width // 2, screen_height, 4], dtype=np.uint8)
 # actual_image = np.zeros([screen_width // 2, screen_height, 3], dtype=np.uint8)
 # gui_image = np.zeros([screen_width // 2, screen_height, 4], dtype=np.uint8)
@@ -33,7 +31,7 @@ from apps import Recorder
 device = Headset()
 
 device.system.add_widget(FPSCounter())
-device.system.run_app("apps.Recorder")
+# device.system.run_app("apps.About")
 device.run()
 
 # out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 25, (1480, 1440))
