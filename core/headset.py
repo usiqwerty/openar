@@ -2,7 +2,7 @@ from core.permissive import PermissiveCore
 from core.system import System
 from video.camera import Camera
 from video.display import Display
-
+from tracking_mp_opt import HandTracker
 
 class Headset:
     """
@@ -14,8 +14,10 @@ class Headset:
 
     def __init__(self):
         self.camera = Camera()
+        self.hand_tracker = HandTracker(self.camera)
         self.permissive = PermissiveCore(self)
         self.system = System(self.permissive)
+        self.system.hand_tracker = self.hand_tracker
         self.display = Display(self.camera, self.system)
         self.system.silent_add_thread('display', self.display.show_video)
 

@@ -1,10 +1,11 @@
 import threading
 from typing import Any
 
+from core.app_loader import load_app
+from core.permissive import PermissiveCore
 from gui.abstract.app import Application
 from gui.abstract.appwidget import Widget
-from core.permissive import PermissiveCore
-from core.app_loader import load_app
+from tracking_mp_opt import HandTracker
 
 
 class System:
@@ -15,6 +16,7 @@ class System:
     user_apps: list[Widget | Application]
     threads: list[tuple[str, Any, threading.Thread]]
     permissive: PermissiveCore
+    hand_tracker: HandTracker
 
     def __init__(self, permissive: PermissiveCore):
         self.system_apps = []

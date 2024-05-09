@@ -27,7 +27,7 @@ class Display:
         """
         self.camera = camera
         self.system = system
-        # self.detector = detector
+        self.detector = system.hand_tracker
 
     def show_video(self):
         print('Display job started')
@@ -37,6 +37,11 @@ class Display:
 
             for widget in self.system.user_apps + self.system.system_apps:
                 overlay_images(self.camera_frame, widget.render(), widget.position[0], widget.position[1])
+
+            hands, fingers, miny, minx, maxy, maxx, mask = self.detector.find_and_get_hands(self.camera_frame.copy())
+            mask: np.ndarray
+            if len(fingers) > 0:
+                overlay_images(self.camera_frame, hands, minx, miny)
 
             eye_width = camera_width // 2
 
