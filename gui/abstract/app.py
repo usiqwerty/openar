@@ -1,8 +1,8 @@
 import numpy as np
 
+from core.permissive import SystemApi
 from device_config import screen_size
 from gui.abstract.uiwidget import UIWidget
-from core.permissive import SystemApi
 from video.rendering import overlay_images
 
 
@@ -19,6 +19,8 @@ class Application:
     permissions: list[str]
     system_api: SystemApi
 
+    drag_point: tuple[int, int] | None
+
     def __init__(self, manifest: dict):
         self.position = (0, 0)
         self.background = (255, 255, 255, 255)
@@ -28,6 +30,7 @@ class Application:
         self.permissions = manifest['permissions']
         self.size = tuple(manifest["size"][::-1])
         self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
+        self.drag_point = None
 
     def on_start(self):
         """
@@ -58,3 +61,26 @@ class Application:
         @param delta_size: window size change
         """
         pass
+
+    def on_drag(self, finger_position: tuple[int, int]):
+        """
+        Handle window drag
+        @param finger_position: Index finger position
+        @return:
+        """
+        print("drag:", self.drag_point, finger_position)
+        fx, fy = finger_position
+
+        if self.drag_point:
+            dx, dy = self.drag_point
+            self.position = (fx - dx, fy - dy)
+        else:
+            winx, winy = self.position
+            self.drag_point = (fx - winx, fy - winy)
+
+    def on_release(self):
+        """
+        Called when gesture released
+        @return:
+        """
+        self.drag_point = None

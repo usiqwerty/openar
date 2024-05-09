@@ -5,7 +5,8 @@ from core.app_loader import load_app
 from core.permissive import PermissiveCore
 from gui.abstract.app import Application
 from gui.abstract.appwidget import Widget
-from tracking_mp_opt import HandTracker
+from hands.gesture import Gesture
+from hands.tracking_mp_opt import HandTracker
 
 
 class System:
@@ -20,6 +21,7 @@ class System:
 
     def __init__(self, permissive: PermissiveCore, hand_tracker: HandTracker):
         self.hand_tracker = hand_tracker
+        self.hand_tracker.on_gesture_callback = self.on_gesture
         self.system_apps = []
         self.user_apps = []
         self.threads = []
@@ -75,3 +77,28 @@ class System:
             name, routine, thread = self.threads[0]
             thread.join()
             self.threads.pop(0)
+
+    def on_gesture(self, gesture: Gesture):
+        for app in self.user_apps:
+            if not isinstance(app, Application): continue
+            print(app.name, gesture)
+            if gesture.name == "none":
+                print("Release")
+                app.on_release()
+            if in_rect(gesture.index_finger, app.position, app.size):
+                if gesture.name == "triple":
+                    app.on_drag(gesture.index_finger)
+
+
+def in_rect(pos, corner, size):
+    """
+    Check if point is inside rectangle
+    @param pos: point to be checked
+    @param corner: upper left corner rectangle
+    @param size: rect size
+    @return:
+    """
+    x, y = pos
+    rx, ry = corner
+    w, h = size
+    return rx <= x <= rx + w and ry <= y <= ry + h

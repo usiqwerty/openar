@@ -2,7 +2,7 @@ from core.permissive import PermissiveCore
 from core.system import System
 from video.camera import Camera
 from video.display import Display
-from tracking_mp_opt import HandTracker
+from hands.tracking_mp_opt import HandTracker
 
 class Headset:
     """

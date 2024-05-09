@@ -31,7 +31,7 @@ from widgets.fps import FPSCounter
 device = Headset()
 
 device.system.add_widget(FPSCounter())
-# device.system.run_app("apps.About")
+device.system.run_app("apps.About")
 device.run()
 
 # out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 25, (1480, 1440))
