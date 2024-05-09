@@ -1,5 +1,5 @@
-import mediapipe as mp
 import cv2
+import mediapipe as mp
 import numpy as np
 from cvzone.SelfiSegmentationModule import SelfiSegmentation
 
@@ -21,16 +21,18 @@ class HandTracker:
     x: int
     y: int
     fingers: list[list[int]]
+
     def __init__(self, camera: Camera):
-        self.camera=camera
+        self.camera = camera
         self.frame = np.zeros((100, 100, 3))
-        self.x=0
-        self.y=0
-        self.fingers=[]
+        self.x = 0
+        self.y = 0
+        self.hands = np.zeros((10, 10, 4), dtype=np.uint8)
+        self.fingers = []
 
     def remove_background(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-        
+
         ret, mask = cv2.threshold(gray, 5, 255, cv2.THRESH_TRIANGLE)
         mask = cv2.bitwise_not(mask)
         kernel = np.ones((9, 9), np.uint8)
@@ -42,7 +44,7 @@ class HandTracker:
         result[:, :, 3] = mask
         # for i in range(3): result[:, :, i] = mask
         return result, mask
-    
+
     def find_and_get_hands(self, image):
         results = hands.process(image)
 
@@ -51,7 +53,7 @@ class HandTracker:
         minx = 0
         maxy = 0
         maxx = 0
-        mask = 0
+        mask = np.zeros((10,10))
         if results.multi_hand_landmarks:
             myHand = results.multi_hand_landmarks[0]
             for id, lm in enumerate(myHand.landmark):
@@ -78,16 +80,15 @@ class HandTracker:
             miny = max(miny, 1)
 
             image = image[miny:maxy, minx:maxx]
-            image, mask = self.remove_background(image)    
+            image, mask = self.remove_background(image)
 
         return image, lmList, miny, minx, maxy, maxx, mask
 
-    def detect(self):
-        # hands, fingers, miny, minx, maxy, maxx, mask =
-        # self.frame = hands
-        # self.mask = mask
-        #
-        # self.x = minx
-        # self.y = miny
-        # self.fingers = fingers
-        return self.find_and_get_hands(self.camera.frame)
+    def job(self):
+        while True:
+            hands, fingers, miny, minx, maxy, maxx, mask = self.find_and_get_hands(self.camera.frame[:, :, :3].copy())
+            self.x = minx
+            self.y = miny
+
+            self.hands = cv2.cvtColor(mask.astype(np.uint8), cv2.COLOR_GRAY2BGRA)
+            self.hands[:, :, 3] = mask.astype(np.uint8)

@@ -18,11 +18,14 @@ class System:
     permissive: PermissiveCore
     hand_tracker: HandTracker
 
-    def __init__(self, permissive: PermissiveCore):
+    def __init__(self, permissive: PermissiveCore, hand_tracker: HandTracker):
+        self.hand_tracker = hand_tracker
         self.system_apps = []
         self.user_apps = []
         self.threads = []
         self.permissive = permissive
+
+        self.silent_add_thread("hand-tracker", hand_tracker.job)
 
     def add_widget(self, widget: Widget):
         self.user_apps.append(widget)
