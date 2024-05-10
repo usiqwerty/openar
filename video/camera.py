@@ -25,7 +25,7 @@ class Camera:
     def pull_frame(self):
         success, actual_image = self.stream.read()
 
-        if not success:  # or not isinstance(actual_image, np.ndarray)
+        if not success:
             return
 
         actual_image = actual_image[:, eye_shift:-eye_shift]

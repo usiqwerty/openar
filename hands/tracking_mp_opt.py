@@ -44,7 +44,6 @@ class HandTracker:
         result = img.copy()
         result = cv2.cvtColor(result, cv2.COLOR_BGR2BGRA)
         result[:, :, 3] = mask
-        # for i in range(3): result[:, :, i] = mask
         return result, mask
 
     def find_and_get_hands(self, image):
@@ -102,7 +101,6 @@ class HandTracker:
                 self.middle = np.array(fingers[12][1:])
                 self.ring = np.array(fingers[16][1:])
                 self.pinky = np.array(fingers[20][1:])
-                # print(self.big, self.index, self.middle, self.ring, self.pinky)
 
                 double = np.linalg.norm(self.big - self.index)
                 triple = np.linalg.norm(self.big - self.index + self.big - self.middle)

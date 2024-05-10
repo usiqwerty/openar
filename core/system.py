@@ -61,12 +61,6 @@ class System:
         Запустить OpenAR в многопоточном режиме. Выполняется, пока не завершатся все потоки
         @return:
         """
-        # self.threads += [
-        #     # ['camera', camera.job, None],
-        #     # ['widgets', gui_job, None],
-        #     ('display', self.video_thread, None)
-        #     # ["video", video_writer]
-        # ]
 
         for name, proc, thread in self.threads:
             if not thread.is_alive():
