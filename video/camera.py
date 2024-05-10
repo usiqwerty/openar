@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from device_config import camera_size, eye_shift
+from device_config import camera_size, eye_shift, camera_api
 
 camera_width, camera_height = camera_size
 
@@ -13,9 +13,11 @@ class Camera:
     frame: np.ndarray
 
     def __init__(self):
-        stream = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        stream = cv2.VideoCapture(0, camera_api)
         stream.set(cv2.CAP_PROP_FRAME_WIDTH, camera_width)
         stream.set(cv2.CAP_PROP_FRAME_HEIGHT, camera_height)
+        stream.set(cv2.CAP_PROP_AUTO_EXPOSURE, 3)
+        stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter.fourcc(*"MJPG"))
 
         self.stream = stream
         self.frame = np.zeros([camera_width, camera_height, 4], dtype=np.uint8)

@@ -53,4 +53,5 @@ class Display:
 
             cv2.imshow("full", final)
             if cv2.waitKey(imshow_delay) & 0xFF == ord('q'):
+                cv2.destroyAllWindows()
                 exit(0)
