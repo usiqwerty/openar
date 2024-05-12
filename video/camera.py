@@ -16,7 +16,7 @@ class Camera:
         stream = cv2.VideoCapture(0, camera_api)
         stream.set(cv2.CAP_PROP_FRAME_WIDTH, camera_width)
         stream.set(cv2.CAP_PROP_FRAME_HEIGHT, camera_height)
-        stream.set(cv2.CAP_PROP_AUTO_EXPOSURE, 3)
+        # stream.set(cv2.CAP_PROP_AUTO_EXPOSURE, 3)
         stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter.fourcc(*"MJPG"))
 
         self.stream = stream

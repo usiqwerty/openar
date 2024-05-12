@@ -11,5 +11,5 @@ root_path = os.path.dirname(os.path.abspath(__file__))
 
 if os.name == "posix":
     camera_api = cv2.CAP_V4L2
-elif os.name == "windows":
+elif os.name == "nt":
     camera_api = cv2.CAP_DSHOW
