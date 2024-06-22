@@ -4,9 +4,15 @@ import numpy as np
 
 
 class UIWidget:
+    """
+    Basic element of user interface in application
+    """
     x: int
     y: int
 
     @abstractmethod
     def draw(self) -> np.ndarray:
-        pass
+        """
+        Render widget content
+        @return: Ready widget image
+        """

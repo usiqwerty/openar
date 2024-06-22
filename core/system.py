@@ -4,7 +4,7 @@ from typing import Any
 from core.app_loader import load_app
 from core.permissive import PermissiveCore
 from gui.abstract.app import Application
-from gui.abstract.appwidget import Widget
+from gui.abstract.appwidget import AppWidget
 from hands.gesture import Gesture
 from hands.tracking_mp_opt import HandTracker
 
@@ -13,8 +13,8 @@ class System:
     """
     OpenAR system
     """
-    system_apps: list[Widget | Application]
-    user_apps: list[Widget | Application]
+    system_apps: list[AppWidget | Application]
+    user_apps: list[AppWidget | Application]
     threads: list[tuple[str, Any, threading.Thread]]
     permissive: PermissiveCore
     hand_tracker: HandTracker
@@ -29,7 +29,7 @@ class System:
 
         self.silent_add_thread("hand-tracker", hand_tracker.job)
 
-    def add_widget(self, widget: Widget):
+    def add_widget(self, widget: AppWidget):
         self.user_apps.append(widget)
 
     def run_app(self, app_name: str):

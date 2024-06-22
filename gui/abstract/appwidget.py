@@ -3,9 +3,9 @@ from abc import abstractmethod
 from device_config import screen_size
 
 
-class Widget:
+class AppWidget:
     """
-    UI Widget
+    A brief application to display information
     """
     screen_size = screen_size
     position: tuple[int, int]
@@ -17,7 +17,7 @@ class Widget:
     @abstractmethod
     def render(self):
         """
-        Draw frame layer in RGBA mode
+        Render AppWidget content in RGBA mode
         """
         pass
 

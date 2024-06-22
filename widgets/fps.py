@@ -3,10 +3,10 @@ import time
 import cv2
 import numpy as np
 
-from gui.abstract.appwidget import Widget
+from gui.abstract.appwidget import AppWidget
 
 
-class FPSCounter(Widget):
+class FPSCounter(AppWidget):
     prev_frame_time = 0
     font = cv2.FONT_HERSHEY_SIMPLEX
 
