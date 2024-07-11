@@ -4,6 +4,7 @@ from video.camera import Camera
 from video.display import Display
 from hands.tracking_mp_opt import HandTracker
 
+
 class Headset:
     """
     Аппаратная конфигурация устройства

@@ -26,7 +26,8 @@ class FPSCounter(AppWidget):
             self.counts.append(1 / (new_frame_time - self.prev_frame_time))
             self.prev_frame_time = new_frame_time
 
-            if len(self.counts) > 50: self.counts.pop(0)
+            if len(self.counts) > 50:
+                self.counts.pop(0)
             fps = sum(self.counts) / len(self.counts)
             fps = str(int(fps))
 

@@ -28,7 +28,7 @@ class Display:
         while True:
             self.camera.pull_frame()
             self.camera_frame = self.camera.frame
-            orig = self.camera_frame.copy()
+
             for widget in self.system.user_apps + self.system.system_apps:
                 overlay_images(self.camera_frame, widget.render(), widget.position[0], widget.position[1])
 

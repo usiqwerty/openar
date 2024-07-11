@@ -77,7 +77,8 @@ class System:
 
     def on_gesture(self, gesture: Gesture):
         for app in self.user_apps:
-            if not isinstance(app, Application): continue
+            if not isinstance(app, Application):
+                continue
             print(app.name, gesture)
             if gesture.name == "none":
                 print("Release")
