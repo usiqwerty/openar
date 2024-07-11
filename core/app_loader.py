@@ -10,13 +10,15 @@ class AppNotLoaded(Exception):
     pass
 
 
-def load_app(app_name) -> Application:
+def load_app(app_name: str, system: bool = False) -> Application:
     """
     Load app package from storage
-    @param app_name: package to be imported
+    @param app_name: package name to be imported
+    @param system: whether app is system or not
     @return: app object
     """
-    manifest_path = '/'.join([root_path, *app_name.split('.'), "manifest.json"])
+    app_dir = "system_apps" if system else "apps"
+    manifest_path = '/'.join([root_path, "data", app_dir, app_name, "manifest.json"])
 
     try:
         with open(manifest_path, encoding='utf-8') as f:
@@ -25,7 +27,7 @@ def load_app(app_name) -> Application:
         raise AppNotLoaded(f"Could not find manifest: {manifest_path}")
 
     try:
-        app_module = importlib.import_module(f"{app_name}.main")
+        app_module = importlib.import_module(f"data.{app_dir}.{app_name}.main")
     except ModuleNotFoundError:
         raise AppNotLoaded(f"Package has no 'main' module: {app_name}")
 

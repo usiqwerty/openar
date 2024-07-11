@@ -32,12 +32,13 @@ class System:
     def add_widget(self, widget: AppWidget):
         self.user_apps.append(widget)
 
-    def run_app(self, app_name: str):
+    def run_app(self, app_name: str, system = False):
         """
         Load and run the app
         @param app_name: package name to be imported
+        @param system: whether app is system or not
         """
-        app = load_app(app_name)
+        app = load_app(app_name, system)
         app.system_api = self.permissive.generate_api_accessor(app.permissions)
         self.user_apps.append(app)
         thread = threading.Thread(name=app.name, target=app.on_start)
