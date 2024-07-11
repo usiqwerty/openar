@@ -34,7 +34,7 @@ class App(Application):
 Рядом, в этой же папке создаём файл `manifest.json` со следующим содержимым:
 ```json
 {
-  "manifest-version": 1.0,
+  "manifest_version": 1.0,
   "name": "My Cool App",
   "permissions": [],
   "size": [700, 500]
@@ -44,11 +44,14 @@ class App(Application):
 
 Параметр `size` определяет размер окна при запуске приложения
 
-Поля `manifest-version` и `permissions` пока оставим без объяснений.
+Поля `manifest_version` и `permissions` пока оставим без объяснений.
 
 Должна получиться следующая структура:
 
 ![](pics/app-creation-2.png)
 
-Всё готово, помещаем папку MyCoolApp в каталог apps системы OpenAR.
-Наше новое приложение готово к запуску.
+Всё готово, помещаем папку MyCoolApp в каталог `apps`:
+
+![](pics/app-creation-3.png)
+
+Теперь наше новое приложение готово к запуску.
