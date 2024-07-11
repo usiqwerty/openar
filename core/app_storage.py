@@ -1,18 +1,24 @@
 import json
 import logging
 import os
-from dataclasses import dataclass
 
 from core.permissions import Permission
 from device_config import root_path
 
 
-@dataclass
 class AppManifest:
+    def __init__(self, **kwargs):
+        for key, val in kwargs.items():
+            match key:
+                case "permissions":
+                    self.permissions = [Permission(p) for p in val]
+                case _:
+                    setattr(self, key, val)
+
     manifest_version: float
     name: str
     permissions: list[Permission]
-    size: list[int, int]
+    size: tuple[int, int]
 
 
 class AppStorage:
@@ -32,17 +38,17 @@ class AppStorage:
 
     def add_apps(self, apps: list[str], is_system):
         for app_name in apps:
-            try:
-                self.append_installed_app(app_name, is_system)
-            except FileNotFoundError:
-                logging.warning(f"App {app_name} does not have manifest")
+            self.append_installed_app(app_name, is_system)
 
     def append_installed_app(self, app_name: str, is_system=False):
         apps_dir = "system_apps" if is_system else "apps"
         manifest_path = '/'.join([root_path, "data", apps_dir, app_name, "manifest.json"])
-        with open(manifest_path, encoding='utf-8') as f:
-            json_manifest = json.load(f)
-        if is_system:
-            self.system_apps.append(AppManifest(**json_manifest))
-        else:
-            self.user_apps.append(AppManifest(**json_manifest))
+        try:
+            with open(manifest_path, encoding='utf-8') as f:
+                json_manifest = json.load(f)
+            if is_system:
+                self.system_apps.append(AppManifest(**json_manifest))
+            else:
+                self.user_apps.append(AppManifest(**json_manifest))
+        except FileNotFoundError:
+            logging.warning(f"App {app_name} does not have manifest")

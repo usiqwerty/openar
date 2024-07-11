@@ -3,6 +3,8 @@ from types import NoneType
 
 import cv2
 
+from core.permissions import Permission
+
 
 class PermissiveCore:
     """
@@ -12,7 +14,7 @@ class PermissiveCore:
     def __init__(self, headset):
         self.headset = headset
 
-    def generate_api_accessor(self, permissions: list[str]):
+    def generate_api_accessor(self, permissions: list[Permission]):
         """
         Creates API accessor object
         @param permissions: list of app permissions to be granted
@@ -20,9 +22,9 @@ class PermissiveCore:
         """
         perms = [None, None]
         for permission in permissions:
-            if permission == "PERM_HEADSET":
+            if permission == Permission.HEADSET:
                 perms[0] = self.headset
-            if permission == "PERM_DISPLAY":
+            if permission == Permission.DISPLAY:
                 perms[1] = self.headset.display
         return SystemApi(*perms)
 

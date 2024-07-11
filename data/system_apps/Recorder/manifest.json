@@ -1,6 +1,6 @@
 {
   "manifest_version": 1.0,
   "name": "Camera Recorder",
-  "permissions": ["PERM_DISPLAY"],
+  "permissions": ["DISPLAY"],
   "size": [700, 200]
 }

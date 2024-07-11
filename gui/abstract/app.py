@@ -1,5 +1,7 @@
 import numpy as np
 
+from core.app_storage import AppManifest
+from core.permissions import Permission
 from core.permissive import SystemApi
 from device_config import screen_size
 from gui.abstract.uiwidget import UIWidget
@@ -16,19 +18,19 @@ class Application:
     size: tuple[int, int]
     background: tuple[int, int, int, int]
     elements: list[UIWidget]
-    permissions: list[str]
+    permissions: list[Permission]
     system_api: SystemApi
 
     drag_point: tuple[int, int] | None
 
-    def __init__(self, manifest: dict):
+    def __init__(self, manifest: AppManifest):
         self.position = (0, 0)
         self.background = (255, 255, 255, 255)
         self.elements = []
         self.permissions = []
-        self.name = manifest["name"]
-        self.permissions = manifest['permissions']
-        self.size = tuple(manifest["size"][::-1])
+        self.name = manifest.name
+        self.permissions = manifest.permissions
+        self.size = manifest.size
         self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
         self.drag_point = None
 
