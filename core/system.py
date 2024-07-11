@@ -2,6 +2,7 @@ import threading
 from typing import Any
 
 from core.app_loader import load_app
+from core.app_storage import AppStorage
 from core.permissive import PermissiveCore
 from gui.abstract.app import Application
 from gui.abstract.appwidget import AppWidget
@@ -16,6 +17,7 @@ class System:
     system_apps: list[AppWidget | Application]
     user_apps: list[AppWidget | Application]
     threads: list[tuple[str, Any, threading.Thread]]
+    app_storage: AppStorage
     permissive: PermissiveCore
     hand_tracker: HandTracker
 
@@ -26,13 +28,13 @@ class System:
         self.user_apps = []
         self.threads = []
         self.permissive = permissive
-
+        self.app_storage = AppStorage()
         self.silent_add_thread("hand-tracker", hand_tracker.job)
 
     def add_widget(self, widget: AppWidget):
         self.user_apps.append(widget)
 
-    def run_app(self, app_name: str, system = False):
+    def run_app(self, app_name: str, system=False):
         """
         Load and run the app
         @param app_name: package name to be imported
@@ -62,7 +64,7 @@ class System:
         Запустить OpenAR в многопоточном режиме. Выполняется, пока не завершатся все потоки
         @return:
         """
-
+        self.app_storage.find_installed_apps()
         for name, proc, thread in self.threads:
             if not thread.is_alive():
                 print(f"Thread {name} is not alive, starting...")
