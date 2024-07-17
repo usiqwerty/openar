@@ -1,5 +1,14 @@
 from gui.abstract.app import Application
+from gui.elements.text import Text
 
 
 class App(Application):
-    pass
+    def on_start(self):
+        installed_apps = self.system_api.get_installed_apps()
+
+        y = 10
+        line_height = 50
+
+        for app in installed_apps:
+            self.elements.append(Text(app.name, x=10, y=y))
+            y += line_height

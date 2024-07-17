@@ -1,6 +1,6 @@
 {
   "manifest_version": 1.0,
   "name": "Launcher",
-  "permissions": [],
-  "size": [700, 200]
+  "permissions": ["INSTALLED_APPLICATIONS"],
+  "size": [700, 500]
 }
