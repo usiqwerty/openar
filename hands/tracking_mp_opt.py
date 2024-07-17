@@ -4,7 +4,7 @@ import numpy as np
 from hands.extractor import find_and_get_hands
 from hands.gesture import Gesture, GestureName
 from video.camera import Camera
-
+from mediapipe.python.solutions.hands import HandLandmark
 
 class HandTracker:
     frame: np.ndarray
@@ -52,15 +52,15 @@ class HandTracker:
                     self.on_gesture_callback(Gesture(name=GestureName.NoGesture, index_finger=(finger_x, finger_y)))
 
     def recognize_gesture(self, fingers, is_gesture):
-        big = np.array(fingers[4][1:])
-        index = np.array(fingers[8][1:])
-        middle = np.array(fingers[12][1:])
-        ring = np.array(fingers[16][1:])
-        pinky = np.array(fingers[20][1:])
+        thumb = np.array(fingers[HandLandmark.THUMB_TIP][1:])
+        index = np.array(fingers[HandLandmark.INDEX_FINGER_TIP][1:])
+        middle = np.array(fingers[HandLandmark.MIDDLE_FINGER_TIP][1:])
+        ring = np.array(fingers[HandLandmark.RING_FINGER_TIP][1:])
+        pinky = np.array(fingers[HandLandmark.PINKY_TIP][1:])
 
-        double = np.linalg.norm(big - index)
-        triple = np.linalg.norm(big - index + big - middle)
-        maximum = np.linalg.norm(big - pinky)
+        double = np.linalg.norm(thumb - index)
+        triple = np.linalg.norm(thumb - index + thumb - middle)
+        maximum = np.linalg.norm(thumb - pinky)
 
         double_closeness = int(100 * double / maximum)
         triple_closeness = int(100 * triple / maximum)
