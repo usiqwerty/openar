@@ -6,7 +6,7 @@ from core.app_storage import AppStorage
 from core.permissive import PermissiveCore
 from gui.abstract.app import Application
 from gui.abstract.appwidget import AppWidget
-from hands.gesture import Gesture
+from hands.gesture import Gesture, GestureName
 from hands.tracking_mp_opt import HandTracker
 
 
@@ -80,11 +80,11 @@ class System:
             if not isinstance(app, Application):
                 continue
             print(app.name, gesture)
-            if gesture.name == "none":
+            if gesture.name == GestureName.NoGesture:
                 print("Release")
                 app.on_release()
             if in_rect(gesture.index_finger, app.position, app.size):
-                if gesture.name == "triple":
+                if gesture.name == GestureName.Triple:
                     app.on_drag(gesture.index_finger)
 
 
