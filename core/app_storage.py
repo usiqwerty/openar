@@ -52,3 +52,6 @@ class AppStorage:
                 self.user_apps.append(AppManifest(**json_manifest))
         except FileNotFoundError:
             logging.warning(f"App {app_name} does not have manifest")
+
+    def get_installed_apps(self):
+        return self.user_apps + self.system_apps
