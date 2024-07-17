@@ -70,7 +70,6 @@ class Application:
         @param finger_position: Index finger position
         @return:
         """
-        print("drag:", self.drag_point, finger_position)
         fx, fy = finger_position
 
         if self.drag_point:

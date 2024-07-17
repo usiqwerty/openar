@@ -79,9 +79,7 @@ class System:
         for app in self.user_apps:
             if not isinstance(app, Application):
                 continue
-            print(app.name, gesture)
             if gesture.name == GestureName.NoGesture:
-                print("Release")
                 app.on_release()
             if in_rect(gesture.index_finger, app.position, app.size):
                 if gesture.name == GestureName.Triple:
