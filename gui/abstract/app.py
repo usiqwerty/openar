@@ -30,7 +30,7 @@ class Application:
         self.permissions = []
         self.name = manifest.name
         self.permissions = manifest.permissions
-        self.size = manifest.size
+        self.size = manifest.size[::-1]
         self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
         self.drag_point = None
 
