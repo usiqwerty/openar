@@ -1,10 +1,11 @@
 import cv2
 import numpy as np
+from mediapipe.python.solutions.hands import HandLandmark
 
 from hands.extractor import find_and_get_hands
 from hands.gesture import Gesture, GestureName
 from video.camera import Camera
-from mediapipe.python.solutions.hands import HandLandmark
+
 
 class HandTracker:
     frame: np.ndarray
@@ -22,7 +23,7 @@ class HandTracker:
 
     on_gesture_callback = lambda s, x: None
     "called if gesture is shown"
-    threshold = 30
+    threshold = 15
 
     def __init__(self, camera: Camera):
         self.camera = camera
@@ -69,10 +70,14 @@ class HandTracker:
         finger_y = int(index[1])
 
         # TODO: call back outside this method
-        if triple_closeness < self.threshold * 2:
+        threshold = self.threshold
+        if is_gesture:
+            threshold *= 2
+
+        if triple_closeness < threshold * 2:
             is_gesture = True
             self.on_gesture_callback(Gesture(name=GestureName.Triple, index_finger=(finger_x, finger_y)))
-        elif double_closeness < self.threshold:
+        elif double_closeness < threshold:
             is_gesture = True
             self.on_gesture_callback(Gesture(name=GestureName.Double, index_finger=(finger_x, finger_y)))
         else:

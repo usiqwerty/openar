@@ -8,6 +8,7 @@ from gui.abstract.app import Application
 from gui.abstract.appwidget import AppWidget
 from hands.gesture import Gesture, GestureName
 from hands.tracking_mp_opt import HandTracker
+from video.utils import in_rect
 
 
 class System:
@@ -17,6 +18,7 @@ class System:
     system_apps: list[AppWidget | Application]
     user_apps: list[AppWidget | Application]
     threads: list[tuple[str, Any, threading.Thread]]
+    autorun: list[str]
     app_storage: AppStorage
     permissive: PermissiveCore
     hand_tracker: HandTracker
@@ -27,6 +29,7 @@ class System:
         self.system_apps = []
         self.user_apps = []
         self.threads = []
+        self.autorun = []
         self.permissive = permissive
         self.app_storage = AppStorage()
         self.silent_add_thread("hand-tracker", hand_tracker.job)
@@ -37,10 +40,10 @@ class System:
     def run_app(self, app_name: str, system=False):
         """
         Load and run the app
-        @param app_name: package name to be imported
-        @param system: whether app is system or not
+        :param app_name: package name to be imported
+        :param system: whether app is system or not
         """
-        app = load_app(app_name, system)
+        app = load_app(app_name, self.app_storage)
         app.system_api = self.permissive.generate_api_accessor(app.permissions)
         self.user_apps.append(app)
         thread = threading.Thread(name=app.name, target=app.on_start)
@@ -50,8 +53,8 @@ class System:
     def silent_add_thread(self, name: str, routine):
         """
         Add thread without starting it
-        @param name: Thread name
-        @param routine: function to be run in thread
+        :param name: Thread name
+        :param routine: function to be run in thread
         """
         self.threads.append((name, routine, threading.Thread(name=name, target=routine)))
 
@@ -62,9 +65,10 @@ class System:
     def run(self):
         """
         Запустить OpenAR в многопоточном режиме. Выполняется, пока не завершатся все потоки
-        @return:
         """
         self.app_storage.find_installed_apps()
+        for package_name in self.autorun:
+            self.run_app(package_name)
         for name, proc, thread in self.threads:
             if not thread.is_alive():
                 print(f"Thread {name} is not alive, starting...")
@@ -79,24 +83,10 @@ class System:
         for app in self.user_apps:
             if not isinstance(app, Application):
                 continue
-            print(app.name, gesture)
             if gesture.name == GestureName.NoGesture:
-                print("Release")
                 app.on_release()
             if in_rect(gesture.index_finger, app.position, app.size):
                 if gesture.name == GestureName.Triple:
                     app.on_drag(gesture.index_finger)
-
-
-def in_rect(pos, corner, size):
-    """
-    Check if point is inside rectangle
-    @param pos: point to be checked
-    @param corner: upper left corner rectangle
-    @param size: rect size
-    @return:
-    """
-    x, y = pos
-    rx, ry = corner
-    w, h = size
-    return rx <= x <= rx + w and ry <= y <= ry + h
+                if gesture.name == GestureName.Double:
+                    app.on_touch(gesture.index_finger)

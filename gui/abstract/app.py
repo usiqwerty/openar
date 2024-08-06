@@ -3,6 +3,7 @@ import numpy as np
 from core.app_storage import AppManifest
 from core.permissions import Permission
 from core.permissive import SystemApi
+from video.utils import in_rect
 from device_config import screen_size
 from gui.abstract.uiwidget import UIWidget
 from video.rendering import overlay_images
@@ -53,24 +54,29 @@ class Application:
     def on_touch(self, touch_position: tuple[int, int]):
         """
         Handle touch action
-        @param touch_position: Coordinates
+        :param touch_position: Coordinates
         """
-        pass
+        touch_x = touch_position[0] - self.position[0]
+        touch_y = touch_position[1] - self.position[1]
+
+        for element in self.elements:
+            if in_rect((touch_x, touch_y), (element.x, element.y), (element.width, element.height)):
+                element.on_click(*touch_position)
+                break
 
     def on_resize(self, delta_size: tuple[int, int]):
         """
         Handle window resize action
-        @param delta_size: window size change
+        :param delta_size: window size change
         """
         pass
 
     def on_drag(self, finger_position: tuple[int, int]):
         """
         Handle window drag
-        @param finger_position: Index finger position
-        @return:
+        :param finger_position: Index finger position
+        :return:
         """
-        print("drag:", self.drag_point, finger_position)
         fx, fy = finger_position
 
         if self.drag_point:
@@ -83,6 +89,6 @@ class Application:
     def on_release(self):
         """
         Called when gesture released
-        @return:
+        :return:
         """
         self.drag_point = None
