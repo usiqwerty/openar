@@ -34,7 +34,7 @@ def load_app(app_name: str, system: bool = False) -> Application:
     app_module.App: type[Application]
     try:
         # TODO: передавать путь к папке с приложением
-        app_object: Application = app_module.App(AppManifest(**app_manifest))
+        app_object: Application = app_module.App(AppManifest(**app_manifest, package_name=app_name))
         return app_object
     except Exception as e:
         print(traceback.format_exc())

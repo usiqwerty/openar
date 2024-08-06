@@ -17,6 +17,7 @@ class AppManifest:
 
     manifest_version: float
     name: str
+    package_name: str
     permissions: list[Permission]
     size: tuple[int, int]
 
@@ -47,11 +48,11 @@ class AppStorage:
             with open(manifest_path, encoding='utf-8') as f:
                 json_manifest = json.load(f)
             if is_system:
-                self.system_apps.append(AppManifest(**json_manifest))
+                self.system_apps.append(AppManifest(**json_manifest, package_name=app_name))
             else:
-                self.user_apps.append(AppManifest(**json_manifest))
+                self.user_apps.append(AppManifest(**json_manifest, package_name=app_name))
         except FileNotFoundError:
             logging.warning(f"App {app_name} does not have manifest")
 
     def get_installed_apps(self):
-        return self.user_apps + self.system_apps
+        return self.user_apps # + self.system_apps

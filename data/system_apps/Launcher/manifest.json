@@ -1,6 +1,6 @@
 {
   "manifest_version": 1.0,
   "name": "Launcher",
-  "permissions": ["INSTALLED_APPLICATIONS"],
+  "permissions": ["INSTALLED_APPLICATIONS", "HEADSET"],
   "size": [700, 500]
 }
