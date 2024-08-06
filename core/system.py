@@ -41,7 +41,7 @@ class System:
         :param app_name: package name to be imported
         :param system: whether app is system or not
         """
-        app = load_app(app_name, system)
+        app = load_app(app_name, self.app_storage)
         app.system_api = self.permissive.generate_api_accessor(app.permissions)
         self.user_apps.append(app)
         thread = threading.Thread(name=app.name, target=app.on_start)

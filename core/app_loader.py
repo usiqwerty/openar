@@ -2,7 +2,7 @@ import importlib
 import json
 import traceback
 
-from core.app_storage import AppManifest
+from core.app_storage import AppManifest, AppStorage
 from device_config import root_path
 from gui.abstract.app import Application
 
@@ -11,22 +11,22 @@ class AppNotLoaded(Exception):
     pass
 
 
-def load_app(app_name: str, system: bool = False) -> Application:
+def load_app(app_name: str, app_storage: AppStorage) -> Application:
     """
     Load app package from storage
     @param app_name: package name to be imported
     @param system: whether app is system or not
     @return: app object
     """
-    app_dir = "system_apps" if system else "apps"
-    manifest_path = '/'.join([root_path, "data", app_dir, app_name, "manifest.json"])
+
+    # manifest_path = '/'.join([root_path, "data", app_dir, app_name, "manifest.json"])
 
     try:
-        with open(manifest_path, encoding='utf-8') as f:
-            app_manifest: dict = json.load(f)
-    except FileNotFoundError:
-        raise AppNotLoaded(f"Could not find manifest: {manifest_path}")
+        app_manifest = app_storage.get_manifest(app_name)
+    except NameError as e:
+        raise AppNotLoaded(f"Could not find app manifest: {app_name}") from e
 
+    app_dir = "system_apps" if app_manifest.is_system else "apps"
     try:
         app_module = importlib.import_module(f"data.{app_dir}.{app_name}.main")
     except ModuleNotFoundError:
@@ -34,7 +34,7 @@ def load_app(app_name: str, system: bool = False) -> Application:
     app_module.App: type[Application]
     try:
         # TODO: передавать путь к папке с приложением
-        app_object: Application = app_module.App(AppManifest(**app_manifest, package_name=app_name))
+        app_object: Application = app_module.App(app_manifest)
         return app_object
     except Exception as e:
         print(traceback.format_exc())
