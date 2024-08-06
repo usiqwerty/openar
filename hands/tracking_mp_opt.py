@@ -1,10 +1,11 @@
 import cv2
 import numpy as np
+from mediapipe.python.solutions.hands import HandLandmark
 
 from hands.extractor import find_and_get_hands
 from hands.gesture import Gesture, GestureName
 from video.camera import Camera
-from mediapipe.python.solutions.hands import HandLandmark
+
 
 class HandTracker:
     frame: np.ndarray

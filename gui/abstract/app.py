@@ -54,7 +54,7 @@ class Application:
     def on_touch(self, touch_position: tuple[int, int]):
         """
         Handle touch action
-        @param touch_position: Coordinates
+        :param touch_position: Coordinates
         """
         for element in self.elements:
             if in_rect(touch_position, (element.x, element.y), (element.width, element.height)):
@@ -64,15 +64,15 @@ class Application:
     def on_resize(self, delta_size: tuple[int, int]):
         """
         Handle window resize action
-        @param delta_size: window size change
+        :param delta_size: window size change
         """
         pass
 
     def on_drag(self, finger_position: tuple[int, int]):
         """
         Handle window drag
-        @param finger_position: Index finger position
-        @return:
+        :param finger_position: Index finger position
+        :return:
         """
         fx, fy = finger_position
 
@@ -86,6 +86,6 @@ class Application:
     def on_release(self):
         """
         Called when gesture released
-        @return:
+        :return:
         """
         self.drag_point = None

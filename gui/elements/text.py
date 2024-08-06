@@ -26,7 +26,7 @@ class Text(UIWidget):
     def draw(self) -> np.ndarray:
         """
         Draw text element
-        @return:
+        :return: widget image
         """
         # TODO: определять размер текста,
         #  чтобы правильно задать размер блока

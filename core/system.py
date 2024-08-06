@@ -38,8 +38,8 @@ class System:
     def run_app(self, app_name: str, system=False):
         """
         Load and run the app
-        @param app_name: package name to be imported
-        @param system: whether app is system or not
+        :param app_name: package name to be imported
+        :param system: whether app is system or not
         """
         app = load_app(app_name, system)
         app.system_api = self.permissive.generate_api_accessor(app.permissions)
@@ -51,8 +51,8 @@ class System:
     def silent_add_thread(self, name: str, routine):
         """
         Add thread without starting it
-        @param name: Thread name
-        @param routine: function to be run in thread
+        :param name: Thread name
+        :param routine: function to be run in thread
         """
         self.threads.append((name, routine, threading.Thread(name=name, target=routine)))
 
@@ -63,7 +63,6 @@ class System:
     def run(self):
         """
         Запустить OpenAR в многопоточном режиме. Выполняется, пока не завершатся все потоки
-        @return:
         """
         self.app_storage.find_installed_apps()
         for name, proc, thread in self.threads:

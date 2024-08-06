@@ -1,10 +1,9 @@
 def in_rect(pos, corner, size):
     """
     Check if point is inside rectangle
-    @param pos: point to be checked
-    @param corner: upper left corner rectangle
-    @param size: rect size
-    @return:
+    :param pos: point to be checked
+    :param corner: upper left corner rectangle
+    :param size: rect size
     """
     x, y = pos
     rx, ry = corner

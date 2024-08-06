@@ -16,7 +16,7 @@ class UIWidget:
     def draw(self) -> np.ndarray:
         """
         Render widget content
-        @return: Ready widget image
+        :return: Ready widget image
         """
 
     def on_click(self, x: int, y: int) -> None:
