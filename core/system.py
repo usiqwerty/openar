@@ -8,6 +8,7 @@ from gui.abstract.app import Application
 from gui.abstract.appwidget import AppWidget
 from hands.gesture import Gesture, GestureName
 from hands.tracking_mp_opt import HandTracker
+from video.utils import in_rect
 
 
 class System:
@@ -84,17 +85,5 @@ class System:
             if in_rect(gesture.index_finger, app.position, app.size):
                 if gesture.name == GestureName.Triple:
                     app.on_drag(gesture.index_finger)
-
-
-def in_rect(pos, corner, size):
-    """
-    Check if point is inside rectangle
-    @param pos: point to be checked
-    @param corner: upper left corner rectangle
-    @param size: rect size
-    @return:
-    """
-    x, y = pos
-    rx, ry = corner
-    w, h = size
-    return rx <= x <= rx + w and ry <= y <= ry + h
+                if gesture.name == GestureName.Double:
+                    app.on_touch(gesture.index_finger)

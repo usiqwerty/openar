@@ -3,6 +3,7 @@ import numpy as np
 from core.app_storage import AppManifest
 from core.permissions import Permission
 from core.permissive import SystemApi
+from video.utils import in_rect
 from device_config import screen_size
 from gui.abstract.uiwidget import UIWidget
 from video.rendering import overlay_images
@@ -55,7 +56,10 @@ class Application:
         Handle touch action
         @param touch_position: Coordinates
         """
-        pass
+        for element in self.elements:
+            if in_rect(touch_position, (element.x, element.y), (element.width, element.height)):
+                element.on_click(*touch_position)
+                break
 
     def on_resize(self, delta_size: tuple[int, int]):
         """

@@ -11,4 +11,4 @@ class App(Application):
 
         for app in installed_apps:
             self.elements.append(Text(app.name, x=10, y=y))
-            y += line_height
+            y += self.elements[-1].height
