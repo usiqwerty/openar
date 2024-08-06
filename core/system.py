@@ -18,6 +18,7 @@ class System:
     system_apps: list[AppWidget | Application]
     user_apps: list[AppWidget | Application]
     threads: list[tuple[str, Any, threading.Thread]]
+    autorun: list[str]
     app_storage: AppStorage
     permissive: PermissiveCore
     hand_tracker: HandTracker
@@ -28,6 +29,7 @@ class System:
         self.system_apps = []
         self.user_apps = []
         self.threads = []
+        self.autorun = []
         self.permissive = permissive
         self.app_storage = AppStorage()
         self.silent_add_thread("hand-tracker", hand_tracker.job)
@@ -65,6 +67,8 @@ class System:
         Запустить OpenAR в многопоточном режиме. Выполняется, пока не завершатся все потоки
         """
         self.app_storage.find_installed_apps()
+        for package_name in self.autorun:
+            self.run_app(package_name)
         for name, proc, thread in self.threads:
             if not thread.is_alive():
                 print(f"Thread {name} is not alive, starting...")
