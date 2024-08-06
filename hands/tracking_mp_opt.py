@@ -37,12 +37,14 @@ class HandTracker:
 
         finger_x = 0
         finger_y = 0
+        i = 0
         while True:
             hands, fingers, min_y, min_x, max_y, max_x, mask = find_and_get_hands(self.camera.frame[:, :, :3].copy())
             self.x = min_x
             self.y = min_y
 
-            self.hands = cv2.cvtColor(mask.astype(np.uint8), cv2.COLOR_GRAY2BGRA)
+            self.hands = cv2.cvtColor(mask.astype(np.uint8), cv2.COLOR_GRAY2BGRA) * i
+            i = (i+1) % 256
             self.hands[:, :, 3] = mask.astype(np.uint8)
 
             if fingers:
