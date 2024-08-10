@@ -3,20 +3,15 @@ import time
 import cv2
 import numpy as np
 
-from gui.abstract.appwidget import AppWidget
+from gui.abstract.app import Application
 
 
-class FPSCounter(AppWidget):
+class App(Application):
     prev_frame_time = 0
     font = cv2.FONT_HERSHEY_SIMPLEX
-
     counts = []
 
-    def __init__(self):
-        super().__init__()
-        self.position = (7, 0)
-
-    def render(self):
+    def render(self) -> np.ndarray:
         frame = np.zeros((self.screen_size[1], self.screen_size[0], 4), dtype=np.uint8)
 
         cv2.rectangle(frame, (0, 0), (150, 70), (0, 0, 0, 255), -1)

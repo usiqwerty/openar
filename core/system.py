@@ -5,7 +5,7 @@ from core.app_loader import load_app
 from core.app_storage import AppStorage
 from core.permissive import PermissiveCore
 from gui.abstract.app import Application
-from gui.abstract.appwidget import AppWidget
+# from gui.abstract.appwidget import AppWidget
 from hands.gesture import Gesture, GestureName
 from hands.tracking_mp_opt import HandTracker
 from video.utils import in_rect
@@ -15,8 +15,8 @@ class System:
     """
     OpenAR system
     """
-    system_apps: list[AppWidget | Application]
-    user_apps: list[AppWidget | Application]
+    system_apps: list[Application]
+    user_apps: list[Application]
     threads: list[tuple[str, Any, threading.Thread]]
     autorun: list[str]
     app_storage: AppStorage
@@ -34,8 +34,6 @@ class System:
         self.app_storage = AppStorage()
         self.silent_add_thread("hand-tracker", hand_tracker.job)
 
-    def add_widget(self, widget: AppWidget):
-        self.user_apps.append(widget)
 
     def run_app(self, app_name: str, system=False):
         """
