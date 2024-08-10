@@ -34,12 +34,10 @@ class System:
         self.app_storage = AppStorage()
         self.silent_add_thread("hand-tracker", hand_tracker.job)
 
-
-    def run_app(self, app_name: str, system=False):
+    def run_app(self, app_name: str):
         """
         Load and run the app
         :param app_name: package name to be imported
-        :param system: whether app is system or not
         """
         app = load_app(app_name, self.app_storage)
         app.system_api = self.permissive.generate_api_accessor(app.permissions)

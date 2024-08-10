@@ -1,9 +1,7 @@
 import importlib
-import json
 import traceback
 
-from core.app_storage import AppManifest, AppStorage
-from device_config import root_path
+from core.app_storage import AppStorage
 from gui.abstract.app import Application
 
 
@@ -14,9 +12,9 @@ class AppNotLoaded(Exception):
 def load_app(app_name: str, app_storage: AppStorage) -> Application:
     """
     Load app package from storage
-    @param app_name: package name to be imported
-    @param system: whether app is system or not
-    @return: app object
+    :param app_name: package name to be imported
+    :param app_storage: applications storage accessor
+    :return: app object
     """
 
     # manifest_path = '/'.join([root_path, "data", app_dir, app_name, "manifest.json"])
@@ -31,7 +29,7 @@ def load_app(app_name: str, app_storage: AppStorage) -> Application:
         app_module = importlib.import_module(f"data.{app_dir}.{app_name}.main")
     except ModuleNotFoundError:
         raise AppNotLoaded(f"Package has no 'main' module: {app_name}")
-    app_module.App: type[Application]
+
     try:
         # TODO: передавать путь к папке с приложением
         app_object: Application = app_module.App(app_manifest)
