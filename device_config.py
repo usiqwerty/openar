@@ -13,3 +13,5 @@ if os.name == "posix":
     camera_api = cv2.CAP_V4L2
 elif os.name == "nt":
     camera_api = cv2.CAP_DSHOW
+
+enable_hand_tracking = False

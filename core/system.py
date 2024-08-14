@@ -1,6 +1,7 @@
 import threading
 from typing import Any
 
+import device_config
 from core.app_loader import load_app
 from core.app_storage import AppStorage
 from core.permissive import PermissiveCore
@@ -32,7 +33,9 @@ class System:
         self.autorun = []
         self.permissive = permissive
         self.app_storage = AppStorage()
-        self.silent_add_thread("hand-tracker", hand_tracker.job)
+
+        if device_config.enable_hand_tracking:
+            self.silent_add_thread("hand-tracker", hand_tracker.job)
 
     def run_app(self, app_name: str):
         """
