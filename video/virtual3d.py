@@ -5,15 +5,14 @@ import numpy as np
 
 import device_config
 
-radius = 500
+radius = device_config.screen_size[0] // 2
 
 
 def get_window_warp(app_size: tuple[int, int], screen_size: tuple[int, int], angle: float):
     screen_width, screen_height = screen_size
     width, height = app_size
 
-
-    window_angle = abs(angle)
+    window_angle = angle
 
     beta = atan(width / 2 / radius)
     gamma = pi / 2 - window_angle - beta
@@ -31,15 +30,16 @@ def get_window_warp(app_size: tuple[int, int], screen_size: tuple[int, int], ang
     x2 = x1 + window_width_projection
     y2 = screen_height / 2 + height / 2
 
-    return [[x1, y1], [x2, y1], [x1, y2], [x2, y2]], (int(x2-x1), int(y2-y1))
-
+    xshift = screen_width / 2 - width / 2 - x1
+    return [[xshift + x1, y1], [xshift + x2, y1], [xshift + x1, y2], [xshift + x2, y2]], (
+    int(window_width_projection), int(y2 - y1)), xshift
 
 
 def transform_image(image: np.ndarray, angle: float):
-
     init_height, init_width, c = image.shape
     screen_width, screen_height = device_config.screen_size
-    target_points, new_size = get_window_warp((init_width, init_height), (screen_width, screen_height), radians(angle))
+    target_points, new_size, xshift = get_window_warp((init_width, init_height), (screen_width, screen_height),
+                                                      radians(angle))
 
     new_width, new_height = new_size
     pts1 = np.float32([
@@ -48,9 +48,9 @@ def transform_image(image: np.ndarray, angle: float):
         [(screen_width - init_width) / 2, (screen_height + init_height) / 2],
         [(screen_width + init_width) / 2, (screen_height + init_height) / 2],
     ])
-    print(target_points)
-    transform = cv2.getPerspectiveTransform(pts1, np.float32(target_points))
+    transform = cv2.getPerspectiveTransform(pts1, np.float32(target_points), cv2.DECOMP_SVD)
 
     r = cv2.warpPerspective(image, transform, (new_width, new_height))
-    # r[:, :, 3] = np.ones(r.shape[:2]) * 255
-    return r, [int(x) for x in target_points[0]]
+    x = int(target_points[0][0])
+    y = int(target_points[0][1])
+    return r, (x - int(xshift), y)

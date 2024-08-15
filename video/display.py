@@ -35,7 +35,6 @@ class Display:
                 app_frame = widget.render()
 
                 final_frame, pos = transform_image(app_frame, widget.angular_position[0])
-                print("overlay", pos, final_frame.shape[::-1])
                 overlay_images(self.camera_frame, final_frame, pos[0], pos[1])
 
             overlay_images(self.camera_frame, self.detector.hands, self.detector.x, self.detector.y)
