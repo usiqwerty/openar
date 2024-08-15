@@ -57,13 +57,13 @@ class Application:
         Handle touch action
         :param touch_position: Coordinates
         """
-        # touch_x = touch_position[0] - self.position[0]
-        # touch_y = touch_position[1] - self.position[1]
-        #
-        # for element in self.elements:
-        #     if in_rect((touch_x, touch_y), (element.x, element.y), (element.width, element.height)):
-        #         element.on_click(*touch_position)
-        #         break
+        touch_x = touch_position[0] # - self.position[0]
+        touch_y = touch_position[1] # - self.position[1]
+
+        for element in self.elements:
+            if in_rect((touch_x, touch_y), (element.x, element.y), (element.width, element.height)):
+                element.on_click(*touch_position)
+                break
 
     def on_resize(self, delta_size: tuple[int, int]):
         """

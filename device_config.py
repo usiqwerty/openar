@@ -14,4 +14,4 @@ if os.name == "posix":
 elif os.name == "nt":
     camera_api = cv2.CAP_DSHOW
 
-enable_hand_tracking = False
+enable_hand_tracking = True

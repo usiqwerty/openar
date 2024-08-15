@@ -10,6 +10,7 @@ from gui.abstract.app import Application
 from hands.gesture import Gesture, GestureName
 from hands.tracking_mp_opt import HandTracker
 from video.utils import in_rect
+from video.virtual3d import is_bounded, get_window_bounds, point_to_direction, direction_to_point_on_window
 
 
 class System:
@@ -42,6 +43,7 @@ class System:
         Load and run the app
         :param app_name: package name to be imported
         """
+        print(f'running app: {app_name}')
         app = load_app(app_name, self.app_storage)
         app.system_api = self.permissive.generate_api_accessor(app.permissions)
         self.user_apps.append(app)
@@ -79,6 +81,7 @@ class System:
             self.threads.pop(0)
 
     def on_gesture(self, gesture: Gesture):
+        print(gesture)
         for app in self.user_apps:
             if not isinstance(app, Application):
                 continue
@@ -87,7 +90,13 @@ class System:
 
             #TODO: in_polygon
             # if in_rect(gesture.index_finger, app.position, app.size):
-            #     if gesture.name == GestureName.Triple:
-            #         app.on_drag(gesture.index_finger)
-            #     if gesture.name == GestureName.Double:
-            #         app.on_touch(gesture.index_finger)
+            direction = point_to_direction(gesture.index_finger)
+            bounds = get_window_bounds(app)
+            print(f"{direction=}")
+            if is_bounded(direction, *bounds):
+                finger_position_on_window = direction_to_point_on_window(direction, app)
+                print(f"{finger_position_on_window=}")
+                if gesture.name == GestureName.Triple:
+                    app.on_drag(finger_position_on_window)
+                if gesture.name == GestureName.Double:
+                    app.on_touch(finger_position_on_window)

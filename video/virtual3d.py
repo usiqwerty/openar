@@ -1,9 +1,10 @@
-from math import cos, pi, atan, sqrt, radians
+from math import cos, pi, atan, sqrt, radians, tan
 
 import cv2
 import numpy as np
 
 import device_config
+from gui.abstract.app import Application
 
 radius = device_config.screen_size[0] // 2
 
@@ -61,9 +62,6 @@ def transform_image(image: np.ndarray, angular_position: tuple[float, float]):
         [(screen_width - init_width) / 2, (screen_height + init_height) / 2],
         [(screen_width + init_width) / 2, (screen_height + init_height) / 2],
     ]
-    print(pts1)
-    print(target_points)
-    print(xshift, yshift)
     transform = cv2.getPerspectiveTransform(np.float32(pts1), np.float32(target_points), cv2.DECOMP_LU)
 
     r = cv2.warpPerspective(image, transform, (new_width, new_height))
@@ -74,3 +72,43 @@ def transform_image(image: np.ndarray, angular_position: tuple[float, float]):
     #     cv2.destroyAllWindows()
     #     exit(0)
     return r, (x, y)
+
+
+def is_bounded(direction: tuple[float, float], left: float, right: float, top: float, bottom: float):
+    x, y = direction
+    return left <= x <= right and top <= y <= bottom
+
+
+def get_window_bounds(app: Application):
+    center_x, center_y = app.angular_position
+    width, height = app.size
+    semi_angle_horizontal = atan(width / 2 / radius)
+    semi_angle_vertical = atan(height / 2 / radius)
+    return (center_x - semi_angle_horizontal,
+            center_x + semi_angle_horizontal,
+            center_y - semi_angle_vertical,
+            center_y + semi_angle_vertical)
+
+
+def point_to_direction(point: tuple[int, int]) -> tuple[float, float]:
+    width, height = device_config.screen_size
+    center_x = width // 2
+    center_y = height // 2
+    x, y = point
+    hor = atan((x-center_x)/radius)
+    ver = atan((y-center_y)/radius)
+    return hor, ver
+
+
+def direction_to_point_on_window(direction: tuple[float, float], app: Application) -> tuple[int, int]:
+    left, right, top, bottom = get_window_bounds(app)
+    dir_x, dir_y = direction
+    app_x, app_y = app.angular_position
+    from_center_x = tan(dir_x-app_x) * radius
+    from_center_y = tan(dir_y-app_y) * radius
+    width, height = app.size
+
+    center_x = width//2
+    center_y = height//2
+
+    return int(center_x+from_center_x), int(center_y+from_center_y)
