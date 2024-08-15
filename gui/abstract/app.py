@@ -1,12 +1,13 @@
 import numpy as np
 
+import device_config
 from core.app_storage import AppManifest
 from core.permissions import Permission
 from core.permissive import SystemApi
-from video.utils import in_rect
 from device_config import screen_size
 from gui.abstract.uiwidget import UIWidget
 from video.rendering import overlay_images
+from video.utils import in_rect
 
 
 class Application:
@@ -25,13 +26,15 @@ class Application:
     drag_point: tuple[int, int] | None
 
     def __init__(self, manifest: AppManifest):
-        self.position = (0, 0)
+
         self.background = (255, 255, 255, 255)
         self.elements = []
         self.permissions = []
         self.name = manifest.name
         self.permissions = manifest.permissions
         self.size = manifest.size[::-1]
+        self.position = (int(device_config.screen_size[0] / 2 - self.size[0] / 2),
+                         int(device_config.screen_size[1] / 2 - self.size[1] / 2))
         self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
         self.drag_point = None
 

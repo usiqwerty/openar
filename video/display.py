@@ -6,6 +6,7 @@ from core.system import System
 from hands.tracking_mp_opt import HandTracker
 from video.camera import Camera
 from video.rendering import overlay_images
+from video.virtual3d import transform_image
 
 camera_width, camera_height = camera_size
 
@@ -30,7 +31,9 @@ class Display:
             self.camera_frame = self.camera.frame
 
             for widget in self.system.user_apps + self.system.system_apps:
-                overlay_images(self.camera_frame, widget.render(), widget.position[0], widget.position[1])
+                app_frame = widget.render()
+                final_frame = transform_image(app_frame)
+                overlay_images(self.camera_frame, final_frame, widget.position[0], widget.position[1])
 
             overlay_images(self.camera_frame, self.detector.hands, self.detector.x, self.detector.y)
             eye_width = camera_width // 2
