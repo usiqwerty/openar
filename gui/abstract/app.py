@@ -25,7 +25,7 @@ class Application:
     drag_point: tuple[int, int] | None
 
     def __init__(self, manifest: AppManifest):
-        self.angular_position = (20, 0)
+        self.angular_position = (0, 0)
         self.background = (255, 255, 255, 255)
         self.elements = []
         self.permissions = []
