@@ -31,7 +31,7 @@ class Application:
         self.permissions = []
         self.name = manifest.name
         self.permissions = manifest.permissions
-        self.size = manifest.size[::-1]
+        self.size = manifest.size
 
         self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
         self.drag_point = None
@@ -46,7 +46,7 @@ class Application:
         """
         Draw frame layer in RGBA mode
         """
-        frame = np.full((*self.size, 4), self.background, dtype=np.uint8)
+        frame = np.full((*self.size[::-1], 4), self.background, dtype=np.uint8)
         for element in self.elements:
             overlay_images(frame, element.draw(), element.x, element.y)
 
