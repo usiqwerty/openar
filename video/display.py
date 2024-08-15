@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+import device_config
 from device_config import camera_size, imshow_delay, screen_size
 from core.system import System
 from hands.tracking_mp_opt import HandTracker
@@ -32,8 +33,10 @@ class Display:
 
             for widget in self.system.user_apps + self.system.system_apps:
                 app_frame = widget.render()
-                final_frame = transform_image(app_frame)
-                overlay_images(self.camera_frame, final_frame, widget.position[0], widget.position[1])
+
+                final_frame, pos = transform_image(app_frame, widget.angular_position[0])
+                print("overlay", pos, final_frame.shape[::-1])
+                overlay_images(self.camera_frame, final_frame, pos[0], pos[1])
 
             overlay_images(self.camera_frame, self.detector.hands, self.detector.x, self.detector.y)
             eye_width = camera_width // 2

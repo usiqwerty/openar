@@ -16,25 +16,23 @@ class Application:
     """
     name: str
     screen_size = screen_size
-    position: tuple[int, int]
     size: tuple[int, int]
     background: tuple[int, int, int, int]
     elements: list[UIWidget]
     permissions: list[Permission]
     system_api: SystemApi
-
+    angular_position: tuple[float, float]
     drag_point: tuple[int, int] | None
 
     def __init__(self, manifest: AppManifest):
-
+        self.angular_position = (30, 0)
         self.background = (255, 255, 255, 255)
         self.elements = []
         self.permissions = []
         self.name = manifest.name
         self.permissions = manifest.permissions
         self.size = manifest.size[::-1]
-        self.position = (int(device_config.screen_size[0] / 2 - self.size[0] / 2),
-                         int(device_config.screen_size[1] / 2 - self.size[1] / 2))
+
         self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
         self.drag_point = None
 
@@ -59,13 +57,13 @@ class Application:
         Handle touch action
         :param touch_position: Coordinates
         """
-        touch_x = touch_position[0] - self.position[0]
-        touch_y = touch_position[1] - self.position[1]
-
-        for element in self.elements:
-            if in_rect((touch_x, touch_y), (element.x, element.y), (element.width, element.height)):
-                element.on_click(*touch_position)
-                break
+        # touch_x = touch_position[0] - self.position[0]
+        # touch_y = touch_position[1] - self.position[1]
+        #
+        # for element in self.elements:
+        #     if in_rect((touch_x, touch_y), (element.x, element.y), (element.width, element.height)):
+        #         element.on_click(*touch_position)
+        #         break
 
     def on_resize(self, delta_size: tuple[int, int]):
         """
@@ -82,12 +80,12 @@ class Application:
         """
         fx, fy = finger_position
 
-        if self.drag_point:
-            dx, dy = self.drag_point
-            self.position = (fx - dx, fy - dy)
-        else:
-            winx, winy = self.position
-            self.drag_point = (fx - winx, fy - winy)
+        # if self.drag_point:
+        #     dx, dy = self.drag_point
+            # self.position = (fx - dx, fy - dy)
+        # else:
+            # winx, winy = self.position
+            # self.drag_point = (fx - winx, fy - winy)
 
     def on_release(self):
         """

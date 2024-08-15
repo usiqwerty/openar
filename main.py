@@ -4,6 +4,6 @@ from core.headset import Headset
 device = Headset()
 
 # device.system.add_widget(FPSCounter())
-device.system.autorun.append("FPSCounter")
+# device.system.autorun.append("FPSCounter")
 device.system.autorun.append("Launcher")
 device.run()

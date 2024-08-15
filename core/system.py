@@ -84,8 +84,10 @@ class System:
                 continue
             if gesture.name == GestureName.NoGesture:
                 app.on_release()
-            if in_rect(gesture.index_finger, app.position, app.size):
-                if gesture.name == GestureName.Triple:
-                    app.on_drag(gesture.index_finger)
-                if gesture.name == GestureName.Double:
-                    app.on_touch(gesture.index_finger)
+
+            #TODO: in_polygon
+            # if in_rect(gesture.index_finger, app.position, app.size):
+            #     if gesture.name == GestureName.Triple:
+            #         app.on_drag(gesture.index_finger)
+            #     if gesture.name == GestureName.Double:
+            #         app.on_touch(gesture.index_finger)
