@@ -22,7 +22,7 @@ class Application:
     permissions: list[Permission]
     system_api: SystemApi
     angular_position: tuple[float, float]
-    drag_point: tuple[int, int] | None
+    drag_angle: tuple[float, float] | None
 
     def __init__(self, manifest: AppManifest):
         self.angular_position = (0, 0)
@@ -34,7 +34,7 @@ class Application:
         self.size = manifest.size
 
         self.frame = np.ndarray((*self.size, 4), dtype=np.uint8)
-        self.drag_point = None
+        self.drag_angle = None
 
     def on_start(self):
         """
@@ -72,24 +72,26 @@ class Application:
         """
         pass
 
-    def on_drag(self, finger_position: tuple[int, int]):
+    def on_drag(self, finger_direction: tuple[float, float]):
         """
         Handle window drag
-        :param finger_position: Index finger position
+        :param finger_direction: Index finger direction
         :return:
         """
-        fx, fy = finger_position
+        fx, fy = finger_direction
 
-        # if self.drag_point:
-        #     dx, dy = self.drag_point
-            # self.position = (fx - dx, fy - dy)
-        # else:
-            # winx, winy = self.position
-            # self.drag_point = (fx - winx, fy - winy)
+        if self.drag_angle:
+            dx, dy = self.drag_angle
+            x, y = self.angular_position
+            self.angular_position = (x + fx-dx, y-(fy-dy))  #(fx - dx, fy - dy)
+            # self.drag_angle = finger_direction  # (fx - winx, fy - winy)
+        else:
+            # winx, winy = self.angular_position
+            self.drag_angle =  finger_direction #(fx - winx, fy - winy)
 
     def on_release(self):
         """
         Called when gesture released
         :return:
         """
-        self.drag_point = None
+        self.drag_angle = None

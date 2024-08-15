@@ -92,11 +92,11 @@ class System:
             # if in_rect(gesture.index_finger, app.position, app.size):
             direction = point_to_direction(gesture.index_finger)
             bounds = get_window_bounds(app)
-            print(f"{direction=}")
+            # print(f"{direction=}")
             if is_bounded(direction, *bounds):
                 finger_position_on_window = direction_to_point_on_window(direction, app)
-                print(f"{finger_position_on_window=}")
+                # print(f"{finger_position_on_window=}")
                 if gesture.name == GestureName.Triple:
-                    app.on_drag(finger_position_on_window)
+                    app.on_drag(direction)
                 if gesture.name == GestureName.Double:
                     app.on_touch(finger_position_on_window)

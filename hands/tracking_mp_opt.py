@@ -23,7 +23,7 @@ class HandTracker:
 
     on_gesture_callback = lambda s, x: None
     "called if gesture is shown"
-    threshold = 15
+    threshold = 20
 
     def __init__(self, camera: Camera):
         self.camera = camera

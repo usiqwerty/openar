@@ -1,4 +1,4 @@
-from math import cos, pi, atan, sqrt, radians, tan
+from math import cos, pi, atan, sqrt, radians, tan, degrees
 
 import cv2
 import numpy as np
@@ -82,8 +82,8 @@ def is_bounded(direction: tuple[float, float], left: float, right: float, top: f
 def get_window_bounds(app: Application):
     center_x, center_y = app.angular_position
     width, height = app.size
-    semi_angle_horizontal = atan(width / 2 / radius)
-    semi_angle_vertical = atan(height / 2 / radius)
+    semi_angle_horizontal = degrees(atan(width / 2 / radius))
+    semi_angle_vertical = degrees(atan(height / 2 / radius))
     return (center_x - semi_angle_horizontal,
             center_x + semi_angle_horizontal,
             center_y - semi_angle_vertical,
@@ -95,8 +95,8 @@ def point_to_direction(point: tuple[int, int]) -> tuple[float, float]:
     center_x = width // 2
     center_y = height // 2
     x, y = point
-    hor = atan((x-center_x)/radius)
-    ver = atan((y-center_y)/radius)
+    hor = degrees(atan((x - center_x) / radius))
+    ver = degrees((y - center_y) / radius)
     return hor, ver
 
 
@@ -104,11 +104,11 @@ def direction_to_point_on_window(direction: tuple[float, float], app: Applicatio
     left, right, top, bottom = get_window_bounds(app)
     dir_x, dir_y = direction
     app_x, app_y = app.angular_position
-    from_center_x = tan(dir_x-app_x) * radius
-    from_center_y = tan(dir_y-app_y) * radius
+    from_center_x = tan(dir_x - app_x) * radius
+    from_center_y = tan(dir_y - app_y) * radius
     width, height = app.size
 
-    center_x = width//2
-    center_y = height//2
+    center_x = width // 2
+    center_y = height // 2
 
-    return int(center_x+from_center_x), int(center_y+from_center_y)
+    return int(center_x + from_center_x), int(center_y + from_center_y)
