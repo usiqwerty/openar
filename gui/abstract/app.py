@@ -83,7 +83,9 @@ class Application:
         if self.drag_angle:
             dx, dy = self.drag_angle
             x, y = self.angular_position
-            self.angular_position = (x + fx-dx, y-(fy-dy))  #(fx - dx, fy - dy)
+            # TODO: too accelerated, seems we don't have to add it to
+            #  current coordinates
+            self.angular_position = (x -( fx-dx), y-(fy-dy))  #(fx - dx, fy - dy)
             # self.drag_angle = finger_direction  # (fx - winx, fy - winy)
         else:
             # winx, winy = self.angular_position
