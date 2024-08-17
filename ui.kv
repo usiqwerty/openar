@@ -1,0 +1,12 @@
+#:kivy 1.0.9
+
+<MainScreen>:
+    name: "Test"
+
+    FloatLayout:
+        Image:
+            # this is where the video will show
+            # the id allows easy access
+            id: vid
+            allow_stretch: True  # allow the video image to be scaled
+            keep_ratio: True  # keep the aspect ratio so people don't look squashed

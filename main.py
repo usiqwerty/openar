@@ -1,9 +1,7 @@
-from core.headset import Headset
-# from widgets.fps import FPSCounter
+from kivy.lang import Builder
 
-device = Headset()
+from kivyapp import Main
 
-# device.system.add_widget(FPSCounter())
-# device.system.autorun.append("FPSCounter")
-device.system.autorun.append("Launcher")
-device.run()
+Builder.load_file('ui.kv')
+
+Main().run()

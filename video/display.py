@@ -26,11 +26,12 @@ class Display:
     camera_frame: np.ndarray
     sight_direction: tuple[float, float]
 
-    def __init__(self, camera: Camera, system: System):
+    def __init__(self, camera: Camera, system: System, show_frame):
         self.camera = camera
         self.system = system
         self.detector = system.hand_tracker
         self.sight_direction = (0, 0)
+        self.show_frame = show_frame
 
     def show_video(self):
         print('Display job started')
@@ -58,11 +59,9 @@ class Display:
 
             final = cv2.resize(full_frame, screen_size)
 
-            cv2.imshow("full", final)
-            if cv2.waitKey(imshow_delay) & 0xFF == ord('q'):
-                cv2.destroyAllWindows()
-                exit(0)
-            elif cv2.waitKeyEx(imshow_delay) == LEFT:
+            self.show_frame(final)
+
+            if cv2.waitKeyEx(imshow_delay) == LEFT:
                 sx -= step
             elif cv2.waitKeyEx(imshow_delay) == RIGHT:
                 sx += step
