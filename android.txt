@@ -1,3 +1,0 @@
-title = OpenAR
-author = usiqwerty
-orientation = landscape
