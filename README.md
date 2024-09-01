@@ -5,7 +5,7 @@
 
 [Документация](docs/docs.md)
 
-[Туториал по созданию приложений](docs/tutorials/index.md)
+[Туториал по созданию приложений](docs/tutorials/app-dev/index.md)
 
 <img src="docs/pics/recording.png" width="480" title="Screenshot of OpenAR running" alt="Скриншот интерфейса"/>
 Рекомендуемая версия Python 3.12
