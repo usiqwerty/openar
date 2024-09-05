@@ -1,10 +1,10 @@
-from pythonforandroid.recipe import NDKRecipe
+from pythonforandroid.recipe import NDKRecipe, CppCompiledComponentsPythonRecipe
 
 
-class Mediapipe(NDKRecipe):
+class Mediapipe(CppCompiledComponentsPythonRecipe):
     version = '0.10.13'
     url = 'https://github.com/google/mediapipe/archive/v{version}.zip'
-    depends = ['python3', 'setuptools']
+    depends = ['python3', 'setuptools', 'numpy']
     call_hostpython_via_targetpython = False
     install_in_hostpython = False
     build_cmd: list
@@ -19,12 +19,14 @@ class Mediapipe(NDKRecipe):
     #     '--define=MEDIAPIPE_DISABLE_GPU=1',
     #     '--define=OPENCV=source'
     # ]
-    # def get_recipe_env(self, arch):
-    #     env = super().get_recipe_env(arch)
-    #     env['ANDROID_SDK_HOME'] = '/path/to/your/android/sdk'
-    #     env['ANDROID_NDK_HOME'] = '/path/to/your/android/ndk'
-    #     env['BAZEL_DIR'] = '/path/to/your/bazel'
-    #     return env
+    def get_recipe_env(self, arch):
+        env = super().get_recipe_env(arch)
+        # env['ANDROID_SDK_HOME'] = '/path/to/your/android/sdk'
+        # env['ANDROID_NDK_HOME'] = '/path/to/your/android/ndk'
+        # env['BAZEL_DIR'] = '/path/to/your/bazel'
+        env['NDK_PROJECT_PATH'] = self.get_build_dir(arch.arch) #'./'
+
+        return env
 
 
 recipe = Mediapipe()
