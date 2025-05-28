@@ -71,9 +71,7 @@ sudo apt install -y \
 ```
 ```shell
 # Install Buildozer
-git clone https://github.com/kivy/buildozer.git
-cd buildozer || return 1
-sudo python3 setup.py install
+pip install git+https://github.com/kivy/buildozer.git
 ```
 
 ```shell
